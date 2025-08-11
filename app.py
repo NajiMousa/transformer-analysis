@@ -19,58 +19,52 @@ st.set_page_config(
     page_title="لوحة تحكم المحولات",
     page_icon="⚡"
 )
-st.markdown(
-    """
-    <style>
-    /* تغيير اتجاه النص والمحتوى للصفحة */
-    html, body, .main {
-        direction: rtl;
-        text-align: right;
-    }
-    /* تعديل اتجاه القوائم والنصوص داخل sidebar لو عندك */
-    .css-1d391kg {  /* هذا اسم كلاس sidebar الافتراضي، ممكن يختلف */
-        direction: rtl;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
-st.markdown(
-    """
-    <style>
-    * {
-        font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# CSS لإخفاء كل العناصر غير المرغوب فيها
+# 2. ثم إضافة CSS مباشرة بعدها
 st.markdown("""
 <style>
-/* 1. إخفاء سهم expander الافتراضي */
-.st-emotion-cache-1h9usn1.e1f1d6gn3 {
-    display: none !important;
+/* جميع إعدادات CSS هنا */
+html, body, .main {
+    direction: rtl !important;
+    text-align: right !important;
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
 }
 
-/* 2. إخفاء سهم الرجوع في الشاشات الصغيرة */
-.st-emotion-cache-1vzeuhh.e1f1d6gn2 {
-    display: none !important;
-}
-
-/* 3. إخفاء أسهم التنقل في الجداول */
-.stArrow {
-    visibility: hidden !important;
-}
-
-/* 4. إخفاء أي عناصر أخرى قد تظهر أسهمًا */
-[data-testid="collapsedControl"] {
+[data-testid="stExpanderToggleIcon"] {
     display: none !important;
 }
 </style>
 """, unsafe_allow_html=True)
+
+# st.markdown(
+#     """
+#     <style>
+#     /* تغيير اتجاه النص والمحتوى للصفحة */
+#     html, body, .main {
+#         direction: rtl;
+#         text-align: right;
+#     }
+#     /* تعديل اتجاه القوائم والنصوص داخل sidebar لو عندك */
+#     .css-1d391kg {  /* هذا اسم كلاس sidebar الافتراضي، ممكن يختلف */
+#         direction: rtl;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
+
+# st.markdown(
+#     """
+#     <style>
+#     * {
+#         font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
+
+
 
 # # 1. قراءة الملفات
 Transformer_data_2018 = pd.read_excel('data/info/Transformer_data_2018.xlsx')
