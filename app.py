@@ -1,19 +1,19 @@
 import streamlit as st
 import pandas as pd
-from sklearn.linear_model import LinearRegression
 import numpy as np
 import seaborn as sns
 import matplotlib
-import matplotlib.pyplot as plt
 import plotly.express as px
 import matplotlib.pyplot as plt
 from datetime import datetime
+from sklearn.linear_model import LinearRegression
+from collections import Counter
+import os
 
 
 
-
-matplotlib.rcParams['font.family'] = 'Tajwal'  # أو 'Cairo' أو 'Amiri' حسب المتاح
-matplotlib.rcParams['axes.unicode_minus'] = False  # 
+# matplotlib.rcParams['font.family'] = 'Tajwal'  # أو 'Cairo' أو 'Amiri' حسب المتاح
+# matplotlib.rcParams['axes.unicode_minus'] = False  # 
 st.set_page_config(
     layout="wide",  # هذا يخلي العرض يملى الشاشة كاملة
     page_title="لوحة تحكم المحولات",
@@ -97,11 +97,6 @@ agg_df['load_status'] = pd.cut(
 )
 
 # تهيئة جدول الصيانة إذا ما كان موجود في الـ session_state
-# if "maintenance_table" not in st.session_state:
-#     st.session_state.maintenance_table = []
-import os
-import pandas as pd
-
 CSV_FILE = "maintenance_table.csv"
 
 if "maintenance_table" not in st.session_state:
@@ -115,10 +110,7 @@ if "maintenance_table" not in st.session_state:
 
 
 
-import numpy as np
-import pandas as pd
-from sklearn.linear_model import LinearRegression
-from collections import Counter
+
 
 def generate_recommendations(loads_df, transformer_info, selected_transformer_id=None, selected_transformer=None):
     recs = []
@@ -163,7 +155,6 @@ def generate_recommendations(loads_df, transformer_info, selected_transformer_id
     base_directions = {d for d, c in dir_counts.items() if c >= (len(years) / 2)}
 
     # نحلل التغيرات في الاتجاهات
-    # 1. هل في اتجاه غير معتاد ظهر مرة واحدة فقط؟
     unusual_dirs = set()
     for d in all_directions:
         # ظهر الاتجاه كم مرة في السنوات؟
@@ -328,14 +319,6 @@ def generate_recommendations(loads_df, transformer_info, selected_transformer_id
                 final_summary.append("من المتوقع أن يظل الحمل ضمن سعة المحول على الأقل حتى 6 أشهر قادمة.")
             else:
                 final_summary.extend(future_warnings)
-
-    
-
-    # tabs = st.tabs(["📈 توصيات شاملة", "🔍 توصيات حول المحول", "🗂️ توصيات حول السكاكين"])
-    # # ✅ تبويب نظرة عامة
-    # with tabs[0]:
-    # with tabs[1]:
-    # with tabs[2]:
         
         # تجميع التوصية الختامية بشكل إنساني وسلس
         imbalance_dirs = [s for s in final_summary if "السكينة" in s and "عدم توازن" in s]
@@ -371,8 +354,6 @@ def generate_recommendations(loads_df, transformer_info, selected_transformer_id
     return recs
 
 
-import streamlit as st
-import pandas as pd
 
 def display_recommendations(recs):
     severity_styles = {
@@ -423,9 +404,6 @@ def display_recommendations(recs):
             for item in st.session_state.maintenance_table
         )
 
-
-        # col1, col2 = st.columns([3, 1])
-        # with col1:
         st.markdown(
             f"""
             <div style="
@@ -598,17 +576,12 @@ if page ==  "⚙ تحليل عام ":
     # توحيد أسماء الأعمدة
     rename_dict = {
         'إسم المحول': 'اسم_المحول',
-        # 'قدرة المحول KVA': 'KVA',
         'KVA': 'KVA',
         'الرقم المتسلسل': 'الرقم المتسلسل',
         'سنة التصنيع': 'سنة التصنيع',
         'الخط المغذي': 'الخط المغذى',
-        # 'توزيع أنواع المحولات': 'نوع المحول',
-        # 'توزيع سعات المحولات': 'KVA',
-        # 'أنواع التركيب (هوائي / أرضي)': 'نوع التركيب',
         'نوع المحول': 'نوع التركيب',
         'الاتجاه': 'الاتجاه',
-        # 'الخطوط المغذية للمحولات': 'الخط المغذى',
         'نوع القاطع ': 'نوع القاطع',
         'جسم المحول': 'جسم المحول',
         'مستوى الزيت': 'مستوى الزيت',
@@ -643,8 +616,6 @@ if page ==  "⚙ تحليل عام ":
     print("الأعمدة المفقودة:", missing_cols)
 
     # دمج البيانات مع الحفاظ على الهيكل الموحد
-    # cols_df = pd.DataFrame({"أسماء الأعمدة": common_cols})
-    # st.dataframe(cols_df)
     df_all = pd.concat([
         Transformer_data_2018[common_cols],
         Transformer_data_2020[common_cols],
@@ -913,549 +884,6 @@ if page ==  "⚙ تحليل عام ":
                 st.markdown("#####🔌 طبيعة الأحمال")
                 plot_pie_with_hover(df_filtered, 'طبيعة الاحمال', 'طبيعة الأحمال', hole_size=0.3)
 
-        # يمكن إضافة المزيد من المخططات والمؤشرات هنا بنفس الطريقة مع استخدام df_filtered
-
-
-    # with tabs[0]:
-        
-        # مؤشرات الأداء العامة
-        # col1, col2 = st.columns(2)
-        # with col1:
-        #     # حساب المؤشرات العامة
-        #     st.header("📌 مؤشرات أداء عامة للمحولات")
-        # with col2:
-        #     # الحصول على قائمة سنوات البيانات الموجودة
-        #     years = sorted(df_all['سنة_البيانات'].dropna().unique(), reverse=True)
-
-        #     # إضافة اختيار في sidebar لاختيار السنة (أو "كل السنوات")
-        #     selected_year = st.sidebar.selectbox("اختر سنة البيانات للعرض", options=["كل السنوات"] + years, index=0)
-
-        #     # تطبيق الفلترة بناءً على الاختيار
-        #     if selected_year != "كل السنوات":
-        #         df_filtered = df_all[df_all['سنة_البيانات'] == selected_year]
-        #     else:
-        #         df_filtered = df_all.copy()
-
-            # بعد كده استخدم df_filtered في كل التحليلات والمخططات بدل df_all
-
-        # col1, col2, col3, col4 = st.columns(4)
-        # # حساب المؤشرات العامة
-        # total_transformers = df_all['Transformer_id'].nunique()
-        # avg_capacity = df_all['KVA'].mean()
-        # oldest_year = df_all['سنة التصنيع'].min()
-        # newest_year = df_all['سنة التصنيع'].max()
-
-        # with col1:
-        #     # حساب المؤشرات العامة
-        #     st.metric("عدد المحولات", total_transformers)
-        # with col2:
-        #     st.metric("متوسط السعة", f"{avg_capacity:.2f} KVA")
-        # with col3:
-        #     st.metric("نطاق سنوات التصنيع", f"{oldest_year}-{newest_year}")
-        # with col4:
-        #     st.metric("عدد الشركات المصنعة", df_all['الشركة المصنعة'].nunique() if 'الشركة المصنعة' in df_all.columns else "غير متوفر")
-        
-        # st.markdown("---")
-
-        # # رسم المخططات بناءً على الأعمدة المتوفرة
-        # col1, col2 = st.columns(2)
-
-        # # إنشاء 3 أعمدة أو حسب عدد المخططات التي تريد عرضها جنبًا إلى جنب
-        # col1, col2 = st.columns(2)
-
-        # # ✅ أول مخطط - حالة القاطع
-        # if 'KVA' in df_all.columns:
-        #     with col1:
-        #         st.markdown("##### 📊 سعة المحولات (KVA)")
-        #         value_counts = df_all['KVA'].value_counts().reset_index()
-        #         value_counts.columns = ['KVA', 'count']
-
-        #         fig = px.pie(
-        #             value_counts,
-        #             names='KVA',
-        #             values='count',
-        #             title='',
-        #             hole=0.4
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # if 'حالة القاطع' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📊 حالة القاطع")
-        #         value_counts = df_all['حالة القاطع'].value_counts().reset_index()
-        #         value_counts.columns = ['حالة القاطع', 'count']
-        #         fig = px.pie(
-        #             value_counts,
-        #             names='حالة القاطع',
-        #             values='count',
-        #             title='',
-        #             hole=0.4
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # st.markdown("---")
-
-        # col1, col2 = st.columns(2)
-        # # ✅ ثالث مخطط - الشركة المصنعة
-        # if 'الشركة المصنعة' in df_all.columns:
-        #     with col1:
-        #         st.markdown("##### 📊 الشركة المصنعة")
-        #         value_counts = df_all['الشركة المصنعة'].value_counts().reset_index()
-        #         value_counts.columns = ['الشركة المصنعة', 'count']
-        #         fig = px.pie(
-        #             value_counts,
-        #             names='الشركة المصنعة',
-        #             values='count',
-        #             title='',
-        #             hole=0.4
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-        # if 'سنة_البيانات' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📅 توزيع البيانات حسب السنوات")
-        #         year_counts = df_all['سنة_البيانات'].value_counts().sort_index().reset_index()
-        #         year_counts.columns = ['السنة', 'عدد المحولات']
-        #         fig_years = px.bar(
-        #             year_counts,
-        #             x='السنة',
-        #             y='عدد المحولات',
-        #             title="",
-        #             text='عدد المحولات'
-        #         )
-        #         st.plotly_chart(fig_years, use_container_width=True)
-        # st.markdown("---")
-
-        # col1, col2 = st.columns(2)
-        # # ✅ ثاني مخطط - اتجاه التغذية
-        # with col1:
-        # # مخطط العلاقة بين السعة والعمر
-        #     if all(col in df_all.columns for col in ['KVA', 'سنة التصنيع']):
-        #         st.markdown("##### 📊 العلاقة بين عمر المحول وسعته  ")
-        #         df_all['العمر'] = 2023 - df_all['سنة التصنيع']
-        #         fig_age_cap = px.scatter(
-        #             df_all,
-        #             x='العمر',
-        #             y='KVA',
-        #             trendline="lowess",
-        #             title=''
-        #         )
-        #         st.plotly_chart(fig_age_cap, use_container_width=True)
-        # if 'إتجاه التغذية' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📊 اتجاه التغذية")
-        #         value_counts = df_all['إتجاه التغذية'].value_counts().reset_index()
-        #         value_counts.columns = ['إتجاه التغذية', 'count']
-        #         fig = px.pie(
-        #             value_counts,
-        #             names='إتجاه التغذية',
-        #             values='count',
-        #             title='',
-        #             hole=0.4
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-        
-        # st.markdown("##### توزيع المحولات حسب الخط المغذي ")
-            
-        # # مخطط توزيع الخطوط المغذية
-        # if 'الخط المغذى' in df_all.columns:
-        #     feeder_counts = df_all['الخط المغذى'].value_counts().reset_index()
-        #     fig_feeder = px.treemap(
-        #         feeder_counts,
-        #         path=['الخط المغذى'],
-        #         values='count',
-        #         title=''
-        #     )
-        #     st.plotly_chart(fig_feeder, use_container_width=True)
-            
-        # # # مخطط اتجاهات التغذية
-        # # if 'إتجاه التغذية' in df_all.columns:
-        # #     st.markdown("##### اتجاهات التغذية للمحولات ")
-        # #     direction_counts = df_all['إتجاه التغذية'].value_counts().reset_index()
-        # #     fig_dir = px.pie(
-        # #         direction_counts,
-        # #         names='إتجاه التغذية',
-        # #         values='count',
-        # #         title=''
-        # #     )
-        # #     st.plotly_chart(fig_dir, use_container_width=True)    
-
-        # st.markdown("---")
-
-        # st.markdown("##### خصائص فنية أخرى")
-            
-        # # مخطط نوع القواطع
-        # if 'نوع القاطع' in df_all.columns:
-        #     st.markdown("##### أنواع القواطع المستخدمة")
-        #     breaker_counts = df_all['نوع القاطع'].value_counts().reset_index()
-        #     fig_breaker = px.bar(
-        #         breaker_counts,
-        #         x='نوع القاطع',
-        #         y='count',
-        #         title=''
-        #     )
-        #     st.plotly_chart(fig_breaker, use_container_width=True)
-            
-        # # مخطط وجود التأريض
-        # if 'التأريض' in df_all.columns:
-        #     st.markdown("##### وجود نظام التأريض")
-        #     grounding_counts = df_all['التأريض'].value_counts().reset_index()
-        #     fig_ground = px.pie(
-        #         grounding_counts,
-        #         names='التأريض',
-        #         values='count',
-        #         title=''
-        #     )
-        #     st.plotly_chart(fig_ground, use_container_width=True)
-
-        # # إضافة تحليل Z% إذا كان العمود موجوداً
-        # if 'Z%' in df_all.columns:
-        #     st.markdown("##### تحليل نسبة Z%")
-        #     fig_z = px.box(
-        #         df_all,
-        #         y='Z%',
-        #         points="all",
-        #         title='توزيع قيم Z% للمحولات'
-        #     )
-        #     st.plotly_chart(fig_z, use_container_width=True)   
-        
-
-        #         # تقسيم العرض على 3 أعمدة لكل صف
-        # col1, col2, col3 = st.columns(3)
-
-        # # جسم المحول
-        # if 'جسم المحول' in df_all.columns:
-        #     with col1:
-        #         st.markdown("##### 📦 جسم المحول")
-
-        #         # تجهيز البيانات وإعادة تسمية الأعمدة
-        #         df_pie = df_all['جسم المحول'].value_counts().reset_index()
-        #         df_pie.columns = ['جسم المحول', 'count']
-
-        #         # رسم المخطط
-        #         fig = px.pie(
-        #             df_pie,
-        #             names='جسم المحول',  # أسماء الفئات
-        #             values='count',       # القيم
-        #             title="جسم المحول",
-        #             hole=0.3
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # # مستوى الزيت
-        # if 'مستوى الزيت' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 🛢️ مستوى الزيت")
-        #         fig = px.bar(
-        #             df_all['مستوى الزيت'].value_counts().reset_index(),
-        #             x='مستوى الزيت',
-        #             y='count',
-        #             title="مستوى الزيت"
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # # السليكا جل
-        # if 'السيلكا جل' in df_all.columns:
-        #     with col3:
-        #         st.markdown("##### 💠 السيلكا جل")
-        #         fig = px.pie(
-        #             df_all['السيلكا جل'].value_counts().reset_index(),
-        #             names='index',
-        #             values='السيلكا جل',
-        #             title='count',
-        #             hole=0.4
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # # سطر جديد
-        # col4, col5, col6 = st.columns(3)
-
-        # # مانع الصواعق
-        # if 'مانع الصواعق' in df_all.columns:
-        #     with col4:
-        #         st.markdown("##### ⚡ مانع الصواعق")
-        #         fig = px.bar(
-        #             df_all['مانع الصواعق'].value_counts().reset_index(),
-        #             x='مانع الصواعق',
-        #             y='count',
-        #             title="مانع الصواعق"
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # # الملكية
-        # # if 'الملكية' in df_all.columns:
-        # #     with col5:
-        # #         st.markdown("##### 🏷️ ملكية المحول")
-        # #         fig = px.pie(
-        # #             df_all['الملكية'].value_counts().reset_index(),
-        # #             names='الملكية',
-        # #             values='الملكية',
-        # #             title="الملكية",
-        # #             hole=0.2
-        # #         )
-        # #         st.plotly_chart(fig, use_container_width=True)
-        # if 'الملكية' in df_all.columns:
-        #     with col5:
-        #         st.markdown("##### 🏷️ ملكية المحول")
-                
-        #         if 'اسم_المحول' not in df_all.columns:
-        #             st.error("⚠️ عمود 'اسم_المحول' غير موجود في البيانات!")
-        #         else:
-        #             # تجميع البيانات
-        #             ملكية_counts = (
-        #                 df_all.groupby('الملكية', dropna=False)
-        #                 .agg(
-        #                     count=('الملكية', 'size'),
-        #                     المحولات=('اسم_المحول', lambda x: '<br>'.join(x.astype(str)))
-        #                 )
-        #                 .reset_index()
-        #             )
-
-        #             # رسم المخطط
-        #             fig = px.pie(
-        #                 ملكية_counts,
-        #                 names='الملكية',
-        #                 values='count',
-        #                 title="الملكية",
-        #                 hole=0.2,
-        #                 hover_data={'المحولات': True}
-        #             )
-                    
-        #             # تمكين عرض HTML في التولتيب (حتى تظهر كل محول بسطر)
-        #             fig.update_traces(
-        #                 hovertemplate="<b>%{label}</b><br>عدد: %{value}<br>المحولات:<br>%{customdata[0]}"
-        #             )
-                    
-        #             st.plotly_chart(fig, use_container_width=True)
-
-
-        # # وجود خزان احتياطي
-        # if 'خزان احتياطي' in df_all.columns:
-        #     with col6:
-        #         st.markdown("##### 🛢️ خزان احتياطي")
-        #         df_pie = df_all['خزان احتياطي'].value_counts().reset_index()
-        #         df_pie.columns = ['خزان احتياطي', 'count']
-
-        #         fig = px.pie(
-        #             df_pie,
-        #             names='خزان احتياطي',  # العمود اللي فيه أسماء الفئات
-        #             values='count',         # العمود اللي فيه القيم
-        #             title="خزان احتياطي",
-        #             hole=0.3
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-        # # سطر جديد
-        # col7, _, _ = st.columns(3)
-
-        # # طبيعة الأحمال
-        # if 'طبيعة الاحمال' in df_all.columns:
-        #     with col7:
-        #         st.markdown("#####🔌 طبيعة الأحمال")
-        #         fig = px.pie(
-        #             df_all['طبيعة الاحمال'].value_counts().reset_index(),
-        #             names='index',
-        #             values='طبيعة الاحمال',
-        #             title="طبيعة الأحمال",
-        #             hole=0.3
-        #         )
-        #         st.plotly_chart(fig, use_container_width=True)
-
-
-        # import streamlit as st
-        # import plotly.express as px
-
-        # # دالة مساعدة لرسم مخططات دائرية مع hover يعرض أسماء المحولات
-        # def plot_pie_with_hover(df, column_name, title, hole_size=0.4):
-        #     if column_name not in df.columns or 'اسم_المحول' not in df.columns:
-        #         st.warning(f"⚠️ البيانات غير مكتملة لرسم مخطط '{title}'")
-        #         return
-
-        #     df_counts = (
-        #         df.groupby(column_name, dropna=False)
-        #         .agg(
-        #             count=(column_name, 'size'),
-        #             المحولات=('اسم_المحول', lambda x: '<br>'.join(x.astype(str)))
-        #         )
-        #         .reset_index()
-        #     )
-
-        #     fig = px.pie(
-        #         df_counts,
-        #         names=column_name,
-        #         values='count',
-        #         title=title,
-        #         hole=hole_size,
-        #         hover_data={'المحولات': True}
-        #     )
-
-        #     fig.update_traces(
-        #         hovertemplate="<b>%{label}</b><br>عدد: %{value}<br>المحولات:<br>%{customdata[0]}"
-        #     )
-
-        #     st.plotly_chart(fig, use_container_width=True)
-
-        # # دالة مساعدة لرسم مخططات عمودية مع hover يعرض أسماء المحولات
-        # def plot_bar_with_hover(df, column_name, title):
-        #     if column_name not in df.columns or 'اسم_المحول' not in df.columns:
-        #         st.warning(f"⚠️ البيانات غير مكتملة لرسم مخطط '{title}'")
-        #         return
-
-        #     df_counts = (
-        #         df.groupby(column_name, dropna=False)
-        #         .agg(
-        #             count=(column_name, 'size'),
-        #             المحولات=('اسم_المحول', lambda x: '<br>'.join(x.astype(str)))
-        #         )
-        #         .reset_index()
-        #     )
-
-        #     fig = px.bar(
-        #         df_counts,
-        #         x=column_name,
-        #         y='count',
-        #         title=title,
-        #         hover_data={'المحولات': True}
-        #     )
-
-        #     fig.update_traces(
-        #         hovertemplate="<b>%{x}</b><br>عدد: %{y}<br>المحولات:<br>%{customdata[0]}"
-        #     )
-
-        #     st.plotly_chart(fig, use_container_width=True)
-
-        # # عرض مؤشرات عامة
-        # col1, col2, col3, col4 = st.columns(4)
-        # total_transformers = df_all['Transformer_id'].nunique()
-        # avg_capacity = df_all['KVA'].mean()
-        # oldest_year = df_all['سنة التصنيع'].min()
-        # newest_year = df_all['سنة التصنيع'].max()
-
-        # with col1:
-        #     st.metric("عدد المحولات", total_transformers)
-        # with col2:
-        #     st.metric("متوسط السعة", f"{avg_capacity:.2f} KVA")
-        # with col3:
-        #     st.metric("نطاق سنوات التصنيع", f"{oldest_year}-{newest_year}")
-        # with col4:
-        #     st.metric("عدد الشركات المصنعة", df_all['الشركة المصنعة'].nunique() if 'الشركة المصنعة' in df_all.columns else "غير متوفر")
-
-        # st.markdown("---")
-
-        # col1, col2 = st.columns(2)
-
-        # # ✅ مخطط سعة المحولات (KVA)
-        # if 'KVA' in df_all.columns:
-        #     with col1:
-        #         st.markdown("##### 📊 سعة المحولات (KVA)")
-        #         plot_pie_with_hover(df_all, 'KVA', 'سعة المحولات (KVA)', hole_size=0.4)
-
-        # # ✅ مخطط حالة القاطع
-        # if 'حالة القاطع' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📊 حالة القاطع")
-        #         plot_pie_with_hover(df_all, 'حالة القاطع', 'حالة القاطع', hole_size=0.4)
-
-        # st.markdown("---")
-
-        # col1, col2 = st.columns(2)
-
-        # # ✅ مخطط الشركة المصنعة
-        # if 'الشركة المصنعة' in df_all.columns:
-        #     with col1:
-        #         st.markdown("##### 📊 الشركة المصنعة")
-        #         plot_pie_with_hover(df_all, 'الشركة المصنعة', 'الشركة المصنعة', hole_size=0.4)
-
-        # # ✅ مخطط توزيع البيانات حسب السنوات (Bar chart)
-        # if 'سنة_البيانات' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📅 توزيع البيانات حسب السنوات")
-        #         if 'اسم_المحول' not in df_all.columns:
-        #             st.error("⚠️ عمود 'اسم_المحول' غير موجود في البيانات!")
-        #         else:
-        #             year_counts = (
-        #                 df_all.groupby('سنة_البيانات', dropna=False)
-        #                 .agg(
-        #                     count=('سنة_البيانات', 'size'),
-        #                     المحولات=('اسم_المحول', lambda x: '<br>'.join(x.astype(str)))
-        #                 )
-        #                 .reset_index()
-        #             )
-        #             fig_years = px.bar(
-        #                 year_counts,
-        #                 x='سنة_البيانات',
-        #                 y='count',
-        #                 title="توزيع البيانات حسب السنوات",
-        #                 hover_data={'المحولات': True}
-        #             )
-        #             fig_years.update_traces(
-        #                 hovertemplate="<b>%{x}</b><br>عدد: %{y}<br>المحولات:<br>%{customdata[0]}"
-        #             )
-        #             st.plotly_chart(fig_years, use_container_width=True)
-
-        # st.markdown("---")
-
-        # col1, col2 = st.columns(2)
-
-        # # ✅ مخطط العلاقة بين عمر المحول وسعته
-        # if all(col in df_all.columns for col in ['KVA', 'سنة التصنيع']):
-        #     with col1:
-        #         st.markdown("##### 📊 العلاقة بين عمر المحول وسعته")
-        #         df_all['العمر'] = 2023 - df_all['سنة التصنيع']
-        #         fig_age_cap = px.scatter(
-        #             df_all,
-        #             x='العمر',
-        #             y='KVA',
-        #             trendline="lowess",
-        #             title=''
-        #         )
-        #         st.plotly_chart(fig_age_cap, use_container_width=True)
-
-        # # ✅ مخطط اتجاه التغذية
-        # if 'إتجاه التغذية' in df_all.columns:
-        #     with col2:
-        #         st.markdown("##### 📊 اتجاه التغذية")
-        #         plot_pie_with_hover(df_all, 'إتجاه التغذية', 'اتجاه التغذية', hole_size=0.4)
-
-        # st.markdown("##### توزيع المحولات حسب الخط المغذي ")
-
-        # # مخطط توزيع الخطوط المغذية (treemap بدون hover خاص لأنه يصعب تجميع الأسماء هنا)
-        # if 'الخط المغذى' in df_all.columns:
-        #     feeder_counts = df_all['الخط المغذى'].value_counts().reset_index()
-        #     fig_feeder = px.treemap(
-        #         feeder_counts,
-        #         path=['الخط المغذى'],
-        #         values='count',
-        #         title=''
-        #     )
-        #     st.plotly_chart(fig_feeder, use_container_width=True)
-
-        # st.markdown("---")
-
-        # st.markdown("##### خصائص فنية أخرى")
-
-        # # مخطط نوع القواطع (bar with hover)
-        # if 'نوع القاطع' in df_all.columns:
-        #     st.markdown("##### أنواع القواطع المستخدمة")
-        #     plot_bar_with_hover(df_all, 'نوع القاطع', 'أنواع القواطع المستخدمة')
-
-        # # مخطط وجود التأريض (pie with hover)
-        # if 'التأريض' in df_all.columns:
-        #     st.markdown("##### وجود نظام التأريض")
-        #     plot_pie_with_hover(df_all, 'التأريض', 'وجود نظام التأريض')
-
-        # # تحليل Z% (box plot بدون hover أسماء)
-        # if 'Z%' in df_all.columns:
-        #     st.markdown("##### تحليل نسبة Z%")
-        #     fig_z = px.box(
-        #         df_all,
-        #         y='Z%',
-        #         points="all",
-        #         title='توزيع قيم Z% للمحولات'
-        #     )
-        #     st.plotly_chart(fig_z, use_container_width=True)
-
-        
-
     with tabs[1]:
         st.header("📊 التحليل التاريخي للمحول")
 
@@ -1599,70 +1027,69 @@ if page ==  "⚙ تحليل عام ":
     
     # ✅ تبويب بيانات خام
     with tabs[2]:
-        st.write("هنا محتوى بيانات خام التحليلات العامة  ...")
-        st.title("📊 تحليل تطور المحولات عبر السنوات")
 
-        # اختر المحول الأول
-        selected_transformer_1 = st.selectbox(
-            "🔌 اختر المحول الأول",
-            sorted(df_all['اسم_المحول'].dropna().unique()),
-            key="transformer_1"
-        )
+        # إضافة عمود السنة لكل DataFrame قبل الدمج (تأكد من تنفيذها قبل هذا الجزء)
+        Transformer_data_2018['year'] = 2018
+        Transformer_data_2020['year'] = 2020
+        Transformer_data_2022['year'] = 2022
+        transformer_data_2023['year'] = 2023
 
-        # اختر المحول الثاني (اختياري)
-        selected_transformer_2 = st.selectbox(
-            "🔁 اختر المحول الثاني للمقارنة (اختياري)",
-            ["لا مقارنة"] + sorted(df_all['اسم_المحول'].dropna().unique()),
-            key="transformer_2"
-        )
+        # دمج بيانات المحولات
+        all_transformer_data = pd.concat([
+            Transformer_data_2018,
+            Transformer_data_2020,
+            Transformer_data_2022,
+            transformer_data_2023
+        ], ignore_index=True)
 
-        # # دالة عرض بيانات محول
-        # def show_transformer_history(name, key_prefix=""):
-        #     filtered = df_all[df_all['اسم_المحول'] == name]
-        #     filtered_unique = filtered.drop_duplicates(subset=[col for col in filtered.columns if col != 'العام'])
-        #     filtered_unique = filtered_unique.sort_values('سنة_البيانات')
+        st.header("🗂️ البيانات الكاملة للمحولات  (خام)")
 
-        #     st.subheader(f"📅 تطور المحول: {name}")
-        #     st.dataframe(filtered_unique)
+        
+        # أعمدة الفلترة
+        col1, col2 = st.columns(2)
 
-        #     # التحذيرات ⚠️
-        #     warnings = []
-        #     if 'مستوى الزيت' in filtered_unique.columns:
-        #         low_oil = filtered_unique[filtered_unique['مستوى الزيت'] < 30]
-        #         if not low_oil.empty:
-        #             warnings.append("⚠️ مستوى الزيت منخفض في بعض السنوات!")
+        with col1:
+            transformer_options = ['الكل'] + sorted(all_transformer_data['اسم_المحول'].dropna().unique())
+            selected_transformer = st.selectbox("اختر اسم المحول:", transformer_options, index=0, key="select_transformer")
 
-        #     if 'الطقة الحالية' in filtered_unique.columns:
-        #         delta = filtered_unique['الطقة الحالية'].diff().abs()
-        #         if (delta > 2).any():
-        #             warnings.append("⚠️ تغيّر مفاجئ في الطقة الحالية!")
+        with col2:
+            if selected_transformer == "الكل":
+                available_years = sorted(all_transformer_data['year'].unique(), reverse=True)
+            else:
+                # فلترة السنوات حسب المحول المحدد فقط
+                filtered_by_transformer = all_transformer_data[all_transformer_data['اسم_المحول'] == selected_transformer]
+                available_years = sorted(filtered_by_transformer['year'].unique(), reverse=True)
+            
+            year_filter = st.selectbox("اختر السنة:", ["الكل"] + available_years, index=0, key="select_year")
+        st.markdown("---")
+        # فلترة البيانات بناءً على الاختيارات
+        filtered_data = all_transformer_data.copy()
 
-        #     if warnings:
-        #         st.warning("\n".join(warnings))
+        if selected_transformer != "الكل":
+            filtered_data = filtered_data[filtered_data['اسم_المحول'] == selected_transformer]
 
-        #     # رسم بياني 📈
-        #     selected_metric = st.selectbox(
-        #         "📈 اختر خاصية لعرضها بيانيًا:",
-        #         [col for col in ['مستوى الزيت', 'الطقة الحالية', 'Z%'] if col in filtered_unique.columns],
-        #         key=f"{key_prefix}_metric"
-        #     )
+        if year_filter != "الكل":
+            filtered_data = filtered_data[filtered_data['year'] == year_filter]
 
-        #     if selected_metric:
-        #         fig, ax = plt.subplots()
-        #         ax.plot(filtered_unique['سنة_البيانات'], filtered_unique[selected_metric], marker='o')
-        #         ax.set_title(f"{selected_metric} عبر السنوات")
-        #         ax.set_xlabel("سنة_البيانات")
-        #         ax.set_ylabel(selected_metric)
-        #         ax.grid(True)
-        #         st.pyplot(fig)
+        # حساب ارتفاع الجدول حسب عدد الصفوف، مع الحد الأدنى والحد الأقصى للارتفاع
+        rows_count = filtered_data.shape[0]
+        row_height = 40  # تقريبا ارتفاع صف واحد بالبيكسل
 
-        # # عرض المحول الأول
-        # show_transformer_history(selected_transformer_1, key_prefix="one")
+        # احسب ارتفاع الجدول (لكن لا يزيد عن 1000 بكسل ولا يقل عن 300)
+        table_height = min(max(rows_count * row_height, 200), 1000)
 
-        # # عرض المحول الثاني إذا تم اختياره
-        # if selected_transformer_2 != "لا مقارنة" and selected_transformer_2 != selected_transformer_1:
-        #     st.markdown("---")
-        #     show_transformer_history(selected_transformer_2, key_prefix="two")
+        
+
+        # عرض البيانات أو رسالة تحذير
+        if not filtered_data.empty:
+            st.subheader("بيانات المحولات المفلترة")
+            st.dataframe(
+                filtered_data,
+                height=table_height,
+                use_container_width=True
+            )
+        else:
+            st.warning("⚠️ لا توجد بيانات متاحة حسب معايير الفلترة المحددة")
 
         # دالة عرض بيانات محول
         def show_transformer_history(name, key_prefix=""):
@@ -2614,14 +2041,6 @@ elif page == "📊 لوحة تحليل الأحمال":
             st.warning("لا توجد بيانات أحمال متاحة لهذا المحول.")
 
     with tabs[2]:
-        # st.header("جدولة الصيانة")
-        # if st.session_state.maintenance_table:
-        #     df = pd.DataFrame(st.session_state.maintenance_table)
-        #     st.dataframe(df[['title', 'message', 'action', 'due_in_days', 'status']])
-        #     total_days = df['due_in_days'].sum()
-        #     st.write(f"**مجموع الأيام المطلوبة للصيانة: {total_days} يوم**")
-        # else:
-        #     st.write("لا توجد توصيات مضافة لجدول الصيانة بعد.")
         display_maintenance_tab()
 
 
@@ -2629,7 +2048,7 @@ elif page == "📊 لوحة تحليل الأحمال":
     # ✅ تبويب بيانات خام
 
     with tabs[3]:
-        st.header("🗂️ البيانات الكاملة (خام)")
+        st.header("🗂️ البيانات الكاملة لأحمال المحولات (خام)")
         
         # دمج جميع بيانات الأحمال في DataFrame واحد
         summer_loads = pd.concat([
