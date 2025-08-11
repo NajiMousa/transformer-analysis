@@ -1,0 +1,14 @@
+TRANSFORMER DATA ANALYSIS SUMMARY REPORT
+==================================================
+
+Total Transformers: 300
+Total Capacity: 258,450 KVA
+Average Age: 25.2 years
+Date Generated: 2025-08-08 10:10:23
+
+TOP MANUFACTURERS:
+- ELCO: 58 transformers
+- ABB: 54 transformers
+- SEM: 52 transformers
+- MEKSAN: 49 transformers
+- ARDAN: 48 transformers

@@ -1,0 +1,69 @@
+rules = [
+            {"condition": lambda row: row.get("قياس التيار R", 0) > 100 or row.get("قياس التيار S", 0) > 100 or row.get("قياس التيار T", 0) > 100,
+            "action": "⚠️ تيار مرتفع على الأقل في أحد الفازات"},
+            
+            {"condition": lambda row: abs(row.get("قياس التيار R", 0) - row.get("قياس التيار S", 0)) > 50 or
+                                    abs(row.get("قياس التيار S", 0) - row.get("قياس التيار T", 0)) > 50 or
+                                    abs(row.get("قياس التيار R", 0) - row.get("قياس التيار T", 0)) > 50,
+            "action": "⚠️ عدم توازن بين الفازات"},
+            
+            {"condition": lambda row: row.get("Load_kVA", 0) > row.get("قدرة المحول KVA", 1) * 0.8,
+            "action": "⚠️ المحول يعمل بأحمال مرتفعة (أكثر من 80%)"},
+            
+            {"condition": lambda row: row.get("Load_kVA", 0) > row.get("قدرة المحول KVA", 1),
+            "action": "🚨 المحول تجاوز السعة الكلية!"},
+
+            {"condition": lambda row: row.get("اتجاه السكينة", "") == "غير طبيعي",
+            "action": "⚠️ اتجاه السكينة غير طبيعي"},
+        ]
+
+def run_inference_on_all(transformer_row, load_df):
+            results = []
+
+            for _, load_row in load_df.iterrows():
+                combined_row = {**transformer_row, **load_row.to_dict()}
+                for rule in rules:
+                    try:
+                        if rule["condition"](combined_row):
+                            results.append({
+                                "تاريخ القياس": load_row.get("تاريخ القياس", "غير معروف"),
+                                "التحذير": rule["action"]
+                            })
+                    except Exception as e:
+                        results.append({
+                            "تاريخ القياس": load_row.get("تاريخ القياس", "غير معروف"),
+                            "التحذير": f"⚠️ خطأ في قاعدة: {e}"
+                        })
+            return results
+
+
+
+
+********************
+
+
+
+
+            with col1:
+                # تحضير البيانات
+                st.markdown("##### 📉 توزيع التجاوزات حسب اليوم والساعة")
+                heatmap_data = transformer_loads.assign(
+                    يوم = lambda x: x["تاريخ القياس"].dt.day_name(),
+                    ساعة = lambda x: x["تاريخ القياس"].dt.hour,
+                    تجاوز = lambda x: x["load_ratio"] > 0.8
+                ).pivot_table(
+                    index='يوم',
+                    columns='ساعة',
+                    values='تجاوز',
+                    aggfunc='sum',
+                    fill_value=0
+                )
+                
+                fig = px.imshow(
+                    heatmap_data,
+                    labels=dict(x="الساعة", y="اليوم", color="عدد التجاوزات"),
+                    color_continuous_scale='OrRd',
+                    title=''
+                )
+                fig.update_xaxes(side="top")
+                st.plotly_chart(fig, use_container_width=True)

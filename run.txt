@@ -1,0 +1,9 @@
+D:
+cd School\IsraaUnvirsty\2023_2024\message\models\now
+streamlit run app.py
+streamlit run python_analysis_script.py
+streamlit run main_app_runner.py
+python -X utf8 -v main_app_runner.py
+streamlit run app_a.py
+
+
