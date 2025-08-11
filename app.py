@@ -24,7 +24,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* جميع إعدادات CSS هنا */
-html, body, .main {
+*, html, body, .main {
     direction: rtl !important;
     text-align: right !important;
     font-family: 'IBM Plex Sans Arabic', sans-serif !important;
@@ -53,16 +53,16 @@ html, body, .main {
 #     unsafe_allow_html=True
 # )
 
-st.markdown(
-    """
-    <style>
-    * {
-        font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# st.markdown(
+#     """
+#     <style>
+#     * {
+#         font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 
 
