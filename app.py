@@ -20,72 +20,23 @@ st.set_page_config(
     page_icon="⚡"
 )
 
-# 2. ثم إضافة CSS مباشرة بعدها
-# st.markdown("""
-# <style>
-# /* جميع إعدادات CSS هنا */
-# html, body, .main {
-#     direction: rtl !important;
-#     text-align: right !important;
-#     font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-# }
 
-# [data-testid="stExpanderToggleIcon"] {
-#     display: none !important;
-# }
-# </style>
-# """, unsafe_allow_html=True)
-
-import streamlit as st
-
-# 1. تحميل خط IBM Plex Sans Arabic من Google Fonts
-st.markdown("""
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
-""", unsafe_allow_html=True)
-
-# 2. تطبيق الخط على جميع العناصر مع إعدادات RTL
-st.markdown("""
-<style>
-/* تطبيق الخط على جميع العناصر */
-* {
-    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-}
-
-/* إعدادات RTL للعناصر الرئيسية */
-html, body, [class*="css"]  {
-    direction: rtl !important;
-    text-align: right !important;
-}
-
-/* إخفاء سهم الـ expander */
-[data-testid="stExpanderToggleIcon"] {
-    display: none !important;
-}
-
-/* تعديلات إضافية للعناصر الخاصة */
-.stTextInput input, .stSelectbox select, .stTextArea textarea {
-    text-align: right !important;
-    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# st.markdown(
-#     """
-#     <style>
-#     /* تغيير اتجاه النص والمحتوى للصفحة */
-#     html, body, .main {
-#         direction: rtl;
-#         text-align: right;
-#     }
-#     /* تعديل اتجاه القوائم والنصوص داخل sidebar لو عندك */
-#     .css-1d391kg {  /* هذا اسم كلاس sidebar الافتراضي، ممكن يختلف */
-#         direction: rtl;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
+st.markdown(
+    """
+    <style>
+    /* تغيير اتجاه النص والمحتوى للصفحة */
+    html, body, .main {
+        direction: rtl;
+        text-align: right;
+    }
+    /* تعديل اتجاه القوائم والنصوص داخل sidebar لو عندك */
+    .css-1d391kg {  /* هذا اسم كلاس sidebar الافتراضي، ممكن يختلف */
+        direction: rtl;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.markdown(
     """
