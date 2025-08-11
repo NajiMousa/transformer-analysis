@@ -559,8 +559,8 @@ page = st.sidebar.radio(
 )
 
 
-st.sidebar.markdown("---")
-st.sidebar.caption("© 2024 نظام تحليل المحولات الكهربائية")
+# st.sidebar.markdown("---")
+# st.sidebar.caption("© 2025 نظام تحليل المحولات الكهربائية")
 
 # صفحات مختلفة حسب الاختيار
 if page ==  "⚙ تحليل عام ":
