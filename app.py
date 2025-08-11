@@ -47,6 +47,31 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# CSS لإخفاء كل العناصر غير المرغوب فيها
+st.markdown("""
+<style>
+/* 1. إخفاء سهم expander الافتراضي */
+.st-emotion-cache-1h9usn1.e1f1d6gn3 {
+    display: none !important;
+}
+
+/* 2. إخفاء سهم الرجوع في الشاشات الصغيرة */
+.st-emotion-cache-1vzeuhh.e1f1d6gn2 {
+    display: none !important;
+}
+
+/* 3. إخفاء أسهم التنقل في الجداول */
+.stArrow {
+    visibility: hidden !important;
+}
+
+/* 4. إخفاء أي عناصر أخرى قد تظهر أسهمًا */
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # # 1. قراءة الملفات
 Transformer_data_2018 = pd.read_excel('data/info/Transformer_data_2018.xlsx')
 Transformer_data_2020 = pd.read_excel('data/info/Transformer_data_2020.xlsx')
