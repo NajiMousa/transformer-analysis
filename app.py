@@ -19,8 +19,6 @@ st.set_page_config(
     page_title="لوحة تحكم المحولات",
     page_icon="⚡"
 )
-
-
 st.markdown(
     """
     <style>
@@ -48,8 +46,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-
 
 # # 1. قراءة الملفات
 Transformer_data_2018 = pd.read_excel('data/info/Transformer_data_2018.xlsx')
@@ -562,14 +558,6 @@ page = st.sidebar.radio(
     ]
 )
 
-# # الشريط الجانبي - معلومات إضافية
-# st.sidebar.markdown("---")
-# st.sidebar.subheader("📞 الدعم والمساعدة")
-# st.sidebar.markdown("""
-# - 📧 **البريد الإلكتروني:** ana.naji.1996@gmail.com
-# - 📱 **الهاتف:** +970-595192140
-# - 🌐 **الموقع:** https://najimousa.github.io/
-# """)
 
 st.sidebar.markdown("---")
 st.sidebar.caption("© 2024 نظام تحليل المحولات الكهربائية")
