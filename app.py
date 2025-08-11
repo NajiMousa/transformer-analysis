@@ -53,16 +53,16 @@ html, body, .main {
 #     unsafe_allow_html=True
 # )
 
-# st.markdown(
-#     """
-#     <style>
-#     * {
-#         font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
+st.markdown(
+    """
+    <style>
+    * {
+        font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 
